@@ -9,6 +9,9 @@ install_github("dgrapov/ocpuclient")
 ### Call [CTSgetR]() for metabolite identifier translations
 ```r
 #translate
+library(ocpuclient)
+
+base_url<-'http://localhost/ocpu/' # see here how to launch API:
 endpoint<-'library/CTSgetR/R/CTSgetR'
 url<-paste0(base_url,endpoint)
 
