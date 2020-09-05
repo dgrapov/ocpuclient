@@ -1,4 +1,4 @@
-## simple opencpu API client
+## Simple opencpu API client
 
 
 ### Installation
@@ -6,13 +6,13 @@
 install_github("dgrapov/ocpuclient")
 ```
 
-### Call [CTSgetR](https://github.com/dgrapov/CTSgetR) for metabolite identifier translations
-### See instructions showing how to launch API: https://github.com/dgrapov/CTSgetR#API
+### Examples
+####  Metabolite identifier translations using the [CTSgetR API](https://github.com/dgrapov/CTSgetR#deploy-ctsgetr-as-a-dockerized-api) 
 ```r
 #translate
 library(ocpuclient)
 
-base_url<-'http://localhost/ocpu/' # https://github.com/dgrapov/CTSgetR#API
+base_url<-'http://localhost/ocpu/' 
 endpoint<-'library/CTSgetR/R/CTSgetR'
 url<-paste0(base_url,endpoint)
 
