@@ -8,7 +8,9 @@ Description: R client for opencpu based APIs e.g. (https://github.com/dgrapov/CT
 Depends:
     curl,
     httr,
-    jsonlite
+    jsonlite,
+    memoise
 License: MIT
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.0

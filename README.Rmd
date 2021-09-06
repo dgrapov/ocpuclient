@@ -8,11 +8,12 @@ output:
 
 > ## Simple [`opencpu`](https://www.opencpu.org/) API client
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE,warning=FALSE)
+```
 
 ### Installation
-
-```r
+```{r, eval=FALSE,echo=TRUE}
 install_github("dgrapov/ocpuclient")
 ```
 
