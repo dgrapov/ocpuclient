@@ -1,14 +1,23 @@
-#generic function combining main fun and json parsing
-#' @title dave_fun_toJSON
+#' #generic function combining main fun and json parsing
+#' #' @title dave_fun_toJSON
+#' #' @export
+#' dave_fun_toJSON<-function(fun,args){
+#'
+#'   res<-do.call(fun,args)
+#'
+#'   ocpu_toJSON(res)
+#'
+#' }
+
+#' @title opcpu_fun
 #' @export
-dave_fun_toJSON<-function(fun,args){
+ocpu_fun<-function(fun){
 
-  res<-do.call(fun,args)
-
-  ocpu_toJSON(res)
+  function(...){fun(...) %>%
+      ocpu_toJSON()
+  }
 
 }
-
 
 #keep object class when forcing toJSON
 #' @title dave_toJSON
@@ -51,12 +60,3 @@ ocpu_fromJSON<-function(x){
 #' @import memoise
 ocpu_post<-memoise::memoise(.ocpu_post)
 
-#' @title ocpu_fun_toJSON
-#' @export
-ocpu_fun_toJSON<-function(fun,args){
-
-  res<-do.call(fun,args)
-
-  ocpu_toJSON(res)
-
-}

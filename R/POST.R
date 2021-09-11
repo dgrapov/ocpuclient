@@ -29,7 +29,7 @@ post_ocpu<-function(..., return_value=TRUE){
 
   if(value %in% locs){
 
-    tmp<-paste0(value,'/json') # to deal with unknown clsees for psrsers
+    tmp<-paste0(value,'/json')
     tmp<-paste0(res_url,tmp)
     .name<-'results'
 
