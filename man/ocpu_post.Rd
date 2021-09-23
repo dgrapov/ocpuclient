@@ -14,3 +14,6 @@ ocpu_post(
 \description{
 ocpu_post
 }
+\details{
+can get fails to memoize if called from a shiny app
+}

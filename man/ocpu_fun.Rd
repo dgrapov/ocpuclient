@@ -5,10 +5,14 @@
 \title{opcpu_fun}
 \usage{
 ocpu_fun(fun)
+
+ocpu_fun(fun)
 }
 \description{
 
 }
 \details{
 
+
+used to serialize diverse classes to json
 }

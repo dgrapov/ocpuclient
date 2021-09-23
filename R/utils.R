@@ -1,3 +1,10 @@
+#test connection
+#' @title init_dave_ocpu
+#' @export
+init_dave_ocpu<-function(open_cpu_url='http://localhost/ocpu/'){
+  options('open_cpu_url' = open_cpu_url)
+}
+
 #' #generic function combining main fun and json parsing
 #' #' @title dave_fun_toJSON
 #' #' @export
@@ -11,12 +18,11 @@
 
 #' @title opcpu_fun
 #' @export
-ocpu_fun<-function(fun){
+ocpu_fun<-function(fun,...){
 
-  function(...){fun(...) %>%
-      ocpu_toJSON()
+  function(...){
+    ocpu_toJSON(do.call(fun,...))
   }
-
 }
 
 #keep object class when forcing toJSON
@@ -30,7 +36,7 @@ ocpu_toJSON<-function(x,...){
 
   if(!is.null(check)) return(list(results=check,class=.class))
   .class<-class(x)
-  list(results = toJSON(x,force=TRUE),class=.class)
+  list(results = toJSON(x,force=TRUE),dave_ocpu_class=.class)
 
 }
 
@@ -44,7 +50,7 @@ ocpu_fromJSON<-function(x){
   }
 
   obj<-x$results %>% fromJSON(.)
-  class(obj)<-x$class
+  class(obj)<-x$dave_ocpu_class
   obj
 }
 
@@ -58,5 +64,72 @@ ocpu_fromJSON<-function(x){
 #' @title ocpu_post
 #' @export
 #' @import memoise
+#' @details can get fails to memoize if called from a shiny app
 ocpu_post<-memoise::memoise(.ocpu_post)
+
+
+#' @export
+#' @details used to serialize diverse classes to json
+ocpu_fun<-function(fun){
+  fun(...) %>%
+    ocpu_toJSON()
+}
+
+#' @title ocpu_call
+#' @export
+#' @details call function and serialize results to json
+ocpu_call <-
+  function(fun,
+           body=NULL,
+           pkg_url=NULL,
+           base_url = getOption('open_cpu_url')) {
+
+    results <- error <- NULL
+
+    out <- tryCatch(
+      list(
+        results = ocpu_post(
+          fun = fun,
+          body = body,
+          pkg_url = pkg_url,
+          base_url = base_url
+        ),
+        error = error
+      ),
+      error = function(e) {
+        list(results = results, error = as.character(error))
+      }
+    )
+
+
+  .call<-tryCatch(out$results  %>% ocpuclient::ocpu_fromJSON(),error=function(e){})
+
+  list(results=.call,error=out$error)
+
+  }
+
+test<-function(){
+
+  library(ocpuclient)
+  library(dave.network)
+
+  # .ocpu_metabolic_network<-ocpuclient::ocpu_fun('metabolic_network')
+
+  #' @title ocpu_metabolic_network
+  #' @export
+  ocpu_metabolic_network <- function(
+    body,
+    pkg_url = getOption('dave.network_url'),
+    base_url = getOption('open_cpu_url')) {
+
+    f<-dave.network::metabolic_network
+    fun<-ocpuclient::ocpu_fun('f')
+    ocpu_call(fun,
+              body,
+              pkg_url,
+              base_url)
+  }
+
+
+}
 
