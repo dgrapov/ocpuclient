@@ -16,14 +16,14 @@ init_dave_ocpu<-function(open_cpu_url='http://localhost/ocpu/'){
 #'
 #' }
 
-#' @title opcpu_fun
-#' @export
-ocpu_fun<-function(fun,...){
-
-  function(...){
-    ocpu_toJSON(do.call(fun,...))
-  }
-}
+##' @title opcpu_fun
+##' @export
+# ocpu_fun<-function(fun,...){
+#
+#   function(...){
+#     ocpu_toJSON(do.call(fun,...))
+#   }
+# }
 
 #keep object class when forcing toJSON
 #' @title dave_toJSON
@@ -97,14 +97,14 @@ ocpu_call <-
         error = error
       ),
       error = function(e) {
-        list(results = results, error = as.character(error))
+        list(results = results, error = as.character(e))
       }
     )
 
 
-  .call<-tryCatch(out$results  %>% ocpuclient::ocpu_fromJSON(),error=function(e){})
+  .call<-tryCatch(out$results  %>% ocpuclient::ocpu_fromJSON(),error=function(e){as.character(e)})
 
-  list(results=.call,error=out$error)
+  list(results=.call,error=c(out$error,.call$error))
 
   }
 
