@@ -45,7 +45,7 @@ ocpu_toJSON<-function(x,...){
 #' @import jsonlite
 ocpu_fromJSON<-function(x){
 
-  if(x$class %in% 'data.frame'){
+  if(x$dave_ocpu_class %in% 'data.frame'){
     fromJSON(x$results) %>% as.data.frame()
   }
 
