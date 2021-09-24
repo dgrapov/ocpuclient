@@ -1,7 +1,7 @@
 #test connection
 #' @title init_dave_ocpu
 #' @export
-init_dave_ocpu<-function(open_cpu_url='http://localhost/ocpu/'){
+init_ocpu<-function(open_cpu_url='http://localhost/ocpu/'){
   options('open_cpu_url' = open_cpu_url)
 }
 
@@ -70,8 +70,8 @@ ocpu_post<-memoise::memoise(.ocpu_post)
 
 #' @export
 #' @details used to serialize diverse classes to json
-ocpu_fun<-function(fun){
-  fun(...) %>%
+ocpu_fun<-function(fun,...){
+  do.call(fun,...) %>%
     ocpu_toJSON()
 }
 

@@ -2,10 +2,13 @@
 % Please edit documentation in R/utils.R
 \name{ocpu_toJSON}
 \alias{ocpu_toJSON}
-\title{dave_toJSON}
+\title{opcpu_fun}
 \usage{
 ocpu_toJSON(x, ...)
 }
 \description{
-dave_toJSON
+
+}
+\details{
+
 }
