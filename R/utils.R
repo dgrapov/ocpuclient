@@ -26,19 +26,19 @@ ocpu_toJSON<-function(x,...){
 ocpu_fromJSON<-function(x){
 
   if(x$ocpu_class %in% 'data.frame'){
-    fromJSON(x$results) %>% as.data.frame()
+    as.data.frame(fromJSON(x$results))
   } else
 
-  obj<-x$results %>% fromJSON(.)
+  obj<-fromJSON(x$results)
   class(obj)<-x$ocpu_class
   obj
 }
 
 
-ocpu_post<-function(fun,body,pkg_url, base_url=getOption('open_cpu_url')){
+ocpu_post<-function(fun,body,pkg_url, base_url=getOption('open_cpu_url'),...){
 
   url<-paste0(base_url,pkg_url,fun)
-  post_ocpu(url=url,body=body)
+  post_ocpu(url=url,body=body,...)
 }
 
 # seems memoization should be done at run time
@@ -63,7 +63,8 @@ ocpu_call <-
   function(fun,
            body = NULL,
            pkg_url = NULL,
-           base_url = getOption('open_cpu_url')) {
+           base_url = getOption('open_cpu_url'),
+           ...) {
     results <- error <- NULL
 
     out <- tryCatch(
@@ -71,7 +72,8 @@ ocpu_call <-
           fun = fun,
           body = body,
           pkg_url = pkg_url,
-          base_url = base_url
+          base_url = base_url,
+          ...
       ),
       error = function(e) {
         list(results = results, error = as.character(e))

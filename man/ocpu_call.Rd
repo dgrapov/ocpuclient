@@ -8,7 +8,8 @@ ocpu_call(
   fun,
   body = NULL,
   pkg_url = NULL,
-  base_url = getOption("open_cpu_url")
+  base_url = getOption("open_cpu_url"),
+  ...
 )
 }
 \description{

@@ -71,3 +71,6 @@ ocpu_foo(body=body)
 
 ```
 
+### More
+See `R/curl-utils.R` for functions to interact with native curl commands which are useful for passing unquoted opencpu session object references allowing argument passing between different opencpu sesisons.
+
