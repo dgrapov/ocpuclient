@@ -1,16 +1,12 @@
 Package: ocpuclient
 Type: Package
-Title: Wrappers for POST and GET commands to the opencpu-server
-Version: 0.3.0
+Title: Utilities for interacting with an opencpu-server
+Version: 0.4.2
 Author: Dmitry Grapov
-Maintainer: The package maintainer <createdatasol@gmail.com>
+Maintainer: Dmitry Grapov <createdatasol@gmail.com>
 Description: R client for opencpu based APIs
 Depends:
-    curl,
-    httr,
-    jsonlite,
-    memoise,
-    png
+    crul
 License: MIT
 Encoding: UTF-8
 LazyData: true

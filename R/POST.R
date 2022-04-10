@@ -1,66 +1,50 @@
-
-#' @param ... see httr::POST
-#' @details submit POST request, process and return results or error
-#' @return list of results and error
+#' @title ocpu_post
+#' @param connection crul connection from HttpClient$new()
+#' @param body
+#' @param pkg_url path to package function e.g. ocpu/library/LIBRARY/R/FUNCTION
+#' @param encode one of 'json', 'form' or a function to encode results
+#' @param return_value logical return session calculated value
+#'
+#' @return list of meta including session, status and paths and optionaly result of the session call
 #' @export
-#' @import httr curl
-post_ocpu<-function(..., return_value=TRUE){
+#'
+#' @examples
+ocpu_post <- function(connection,
+                      body = NULL,
+                      pkg_url = 'ocpu/library/dave.ml/R/rebuild_rfe',
+                      encode = NULL,
+                      return_value = FALSE) {
 
-  out<-list(results=NULL,error=NULL)
+  #seems connection is modified in the global scope so need to set each call
+  connection$headers$'Content-Type' <- NULL
 
-  res<-POST(...,encode='json',verbose())
+  if (is.null(encode)) {
+    .body <- body
+  } else{
 
-  #error at API layer
-  if(status_code(res) >=400){
+    if (encode == 'json') {
+      connection$headers$'Content-Type' <- 'application/json'
+      .body <- jsonlite::toJSON(body)
+    }
 
-    out['error']<-rawToChar(res$content)
-    return(out)
+    if (encode == 'form') {
+      .body <- format_crul_input(body)
+    }
   }
 
-  res_headers<-headers(res)
-  res_url<-res_headers$location
-
-  #all endpoints
-  locs<-readLines(curl(res_url))
-
-  value<-'R/.val' # results
-  error<-'console' # error message
+  res <-
+    connection$post(path = pkg_url,
+                    body = .body)
 
 
-  if(value %in% locs){
+  out <- get_crul_results(res)
 
-    tmp<-paste0(value,'/json')
-    tmp<-paste0(res_url,tmp)
-    .name<-'results'
-
-  } else {
-    #R error
-    tmp<-error
-    tmp<-paste0(res_url,tmp)
-    .name<-'error'
-
-  }
-
-  if(return_value){
-
-    res<-fromJSON(readLines(curl(tmp)))
-
-  } else {
-
-    res<-list(locations=locs,headers=res_headers)
-
-  }
-
-
-  if(!'list' %in% class(res)){
-    out[[.name]]<-list(res)
-  } else {
-    out[[.name]]<-res
+  if (return_value) {
+    .session <- ocpu_session(out)
+    if (!is.null(.session))
+      out$results <- get_ocpu_obj(.session)
   }
 
   return(out)
 
-
 }
-
-
